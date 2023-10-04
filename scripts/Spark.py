@@ -1,6 +1,5 @@
 from math import cos, sin, pi, atan2
 import pygame
-# //<canvas id="canvas" width="500" height="500" style="background-color:#000"></canvas>
 
 class Spark:
     def __init__(self, loc, angle, speed, color, scale=1):

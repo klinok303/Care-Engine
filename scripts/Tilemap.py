@@ -32,11 +32,10 @@ class Tilemap:
 
         return matches
 
-    def solid_check(self, pos, curDimension=None):
+    def solid_check(self, pos):
         tile_loc = str(int(pos[0] // self.tile_size)) + ';' + str(int(pos[1] // self.tile_size))
         if tile_loc in self.tilemap:
-            if self.tilemap[tile_loc]['type'] in PHYSICS_TILES and (curDimension == self.tilemap[tile_loc]['dimensions']
-                                                                    or self.tilemap[tile_loc]['dimensions'] == 'both'):
+            if self.tilemap[tile_loc]['type'] in PHYSICS_TILES:
                 return self.tilemap[tile_loc]
 
     def tiles_around(self, pos):
@@ -48,26 +47,24 @@ class Tilemap:
                 tiles.append(self.tilemap[check_loc])
         return tiles
 
-    def physics_rects_around(self, pos, curDimension=None):
+    def physics_rects_around(self, pos):
         rects = []
         for tile in self.tiles_around(pos):
-            if tile['type'] in PHYSICS_TILES and (curDimension == tile['dimensions'] or tile['dimensions'] == 'both'):
+            if tile['type'] in PHYSICS_TILES:
                 rects.append(
                     pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size, self.tile_size,
                                 self.tile_size))
         return rects
 
-    def render(self, surf, offset=(0, 0), curDimension=None):
+    def render(self, surf, offset=(0, 0)):
         for tile in self.offgrid_tiles:
-            if curDimension == tile['dimensions'] or tile['dimensions'] == 'both':
-                surf.blit(self.game.assets[tile['type']][tile['variant']],
-                          (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1]))
+            surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0],
+                                                                        tile['pos'][1] - offset[1]))
 
         for x in range(offset[0] // self.tile_size, (offset[0] + surf.get_width()) // self.tile_size + 1):
             for y in range(offset[1] // self.tile_size, (offset[1] + surf.get_height()) // self.tile_size + 1):
                 loc = str(x) + ';' + str(y)
-                if loc in self.tilemap and (curDimension == self.tilemap[loc]['dimensions'] or
-                                            self.tilemap[loc]['dimensions'] == 'both'):
+                if loc in self.tilemap:
                     tile = self.tilemap[loc]
                     surf.blit(self.game.assets[tile['type']][tile['variant']],
                               (
