@@ -1,1 +1,3 @@
-cmake -G Ninga ../build
+mkdir build
+cd build
+cmake -G Ninga
